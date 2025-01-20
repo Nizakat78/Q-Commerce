@@ -1,0 +1,116 @@
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.0;
+
+/**
+ * @title BadSheepPoloClub Token Contract
+ * @dev ERC-20 token for the Bad Sheep Polo Club
+ */
+contract BadSheepPoloClub {
+    // Token details
+    string public name = "Bad Sheep Polo Club";
+    string public symbol = "BAADAI";
+    uint8 public decimals = 18;
+    uint256 public totalSupply;
+
+    // Owner address
+    address public owner;
+
+    // Balances mapping
+    mapping(address => uint256) private balances;
+
+    // Allowance mapping
+    mapping(address => mapping(address => uint256)) private allowances;
+
+    // Events
+    event Transfer(address indexed from, address indexed to, uint256 value);
+    event Approval(address indexed owner, address indexed spender, uint256 value);
+    event OwnershipTransferred(address indexed previousOwner, address indexed newOwner);
+
+    // Constructor
+    constructor() {
+        owner = msg.sender;
+        totalSupply = 1_000_000_000 * (10 ** uint256(decimals)); // 1 billion tokens
+        balances[owner] = totalSupply; // Assign all tokens to the owner
+        emit Transfer(address(0), owner, totalSupply);
+    }
+
+    // Modifier to restrict functions to the owner
+    modifier onlyOwner() {
+        require(msg.sender == owner, "Caller is not the owner");
+        _;
+    }
+
+    // Function to transfer ownership
+    function transferOwnership(address newOwner) public onlyOwner {
+        require(newOwner != address(0), "New owner cannot be zero address");
+        emit OwnershipTransferred(owner, newOwner);
+        owner = newOwner;
+    }
+
+    // Transfer tokens to another address
+    function transfer(address to, uint256 amount) public returns (bool) {
+        require(to != address(0), "Cannot transfer to zero address");
+        require(balances[msg.sender] >= amount, "Insufficient balance");
+
+        balances[msg.sender] -= amount;
+        balances[to] += amount;
+
+        emit Transfer(msg.sender, to, amount);
+        return true;
+    }
+
+    // Approve spender to spend tokens on behalf of the owner
+    function approve(address spender, uint256 amount) public returns (bool) {
+        require(spender != address(0), "Cannot approve zero address");
+
+        allowances[msg.sender][spender] = amount;
+
+        emit Approval(msg.sender, spender, amount);
+        return true;
+    }
+
+    // Transfer tokens from one address to another (using allowance)
+    function transferFrom(address from, address to, uint256 amount) public returns (bool) {
+        require(to != address(0), "Cannot transfer to zero address");
+        require(balances[from] >= amount, "Insufficient balance");
+        require(allowances[from][msg.sender] >= amount, "Allowance exceeded");
+
+        balances[from] -= amount;
+        allowances[from][msg.sender] -= amount;
+        balances[to] += amount;
+
+        emit Transfer(from, to, amount);
+        return true;
+    }
+
+    // Check the balance of a specific address
+    function balanceOf(address account) public view returns (uint256) {
+        return balances[account];
+    }
+
+    // Check the allowance of a spender for a specific owner
+    function allowance(address accountOwner, address spender) public view returns (uint256) {
+        return allowances[accountOwner][spender];
+    }
+
+    // Mint new tokens (only owner can call this)
+    function mint(address account, uint256 amount) public onlyOwner {
+        require(account != address(0), "Cannot mint to zero address");
+
+        totalSupply += amount;
+        balances[account] += amount;
+
+        emit Transfer(address(0), account, amount);
+    }
+
+    // Burn tokens (only owner can call this)
+    function burn(address account, uint256 amount) public onlyOwner {
+        require(account != address(0), "Cannot burn from zero address");
+        require(balances[account] >= amount, "Insufficient balance to burn");
+
+        totalSupply -= amount;
+        balances[account] -= amount;
+
+        emit Transfer(account, address(0), amount);
+    }
+}
