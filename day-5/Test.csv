@@ -1,0 +1,22 @@
+Page,Test Case ID,Description,Input/Action,Expected Result,Actual Result,Status
+Test Page 1,TC001,Test API response time,Hit http://localhost:3000/Shop to fetch products,Products should display within 2 seconds,Products displayed in 2 seconds,Passed
+Test Page 1,TC002,Handle no products,Fetch products when none exist,"Show ""No products found"" with ""Add Product"" option",Proper fallback message displayed,Passed
+Test Page 1,TC003,Test search functionality,"Search for a specific product (""Pizza"")",Display products matching the search term,Relevant products displayed,Passed
+Test Page 1,TC004,Test filters,Apply category and price filters,Display products based on the selected filters,Products displayed correctly,Passed
+Test Page 1,TC005,Verify pagination,Check that only 9 products are displayed per page,9 products displayed on the page,9 products displayed,Passed
+Test Page 2,TC001,Test dynamic routing,Click on a food image,Navigate to a new page with product details,Navigation and details work fine,Passed
+Test Page 2,TC002,Verify product details,View the selected product's description and details,Show product name, price,Passed
+Test Page 2,TC003,Test quantity adjustment,Use the (+) and (-) buttons,Adjust the quantity of the food item dynamically,Quantity updates dynamically,Passed
+Test Page 2,TC004,"Test ""Add to Cart"" button",Click the Add to Cart button,Show an alert confirming the item has been added,Alert displayed as expected,Passed
+Test Page 3,TC001,Verify products in the cart,Navigate to /Carts after adding items,Display all products added to the cart,All items displayed correctly,Passed
+Test Page 3,TC002,Test product removal,Remove a product from the cart,The product is removed, and the total price is updated,Passed
+Test Page 3,TC003,Test total price update,Add or remove multiple products,Total price adjusts dynamically based on cart contents,Total updates accurately,Passed
+Test Page 3,TC004,Verify API response,Hit /Carts URL in Postman,Status code 200 OK with correct cart data,Status 200 OK,Passed
+Test Page 3,TC005,Check UI updates,Perform actions (add/remove items) and observe UI,UI updates dynamically based on the selected actions,UI updates properly,Passed
+Test Page 4,TC001,Verify navigation to the checkout page,"Click the ""Checkout"" button",Navigate to /Checkout and display checkout details,Navigation and details correct,Passed
+Test Page 4,TC002,Test address form validation,Leave address fields blank and submit,Show error for required fields,Validation works as expected,Passed
+Test Page 4,TC003,Verify cart details in checkout,View the cart details on the checkout page,Display all items with quantities and total price,Cart details displayed properly,Passed
+Test Page 4,TC004,Test discount application,Apply a discount code,Adjust the total price to reflect the discount,Discount applied successfully,Passed
+Test Page 4,TC005,Test discount removal,Remove the discount code,Revert the total price to the original amount,Total price updated correctly,Passed
+Test Page 4,TC006,Verify API response,Hit /Checkout URL in Postman,Status code 200 OK with correct cart and price details,Status 200 OK,Passed
+Test Page 4,TC007,Check UI updates,Perform actions like adding/removing discount and editing address,UI dynamically updates based on the actions performed,UI updates correctly,Passed
